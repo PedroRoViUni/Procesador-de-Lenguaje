@@ -1,0 +1,14 @@
+newHogar asd12 {
+	( habi32 , ( 12 , 14 ) ; sensor123 lum = 10 ; actuador123 pers = subir ) 
+	,
+	( habi13 ,  (13 , 81 ) ; sensor124 lum = 20; acuador123 pers = bajar) 
+	,
+	( habi32 , ( 12 , 14 ) ; sensor123 lum = 10 ; actuador123 pers = subir )
+	, 
+	( habi13 ,  (13 , 81 ) ; sensor124 lum = 20; acuador123 pers = bajar) 
+	;
+	accesos: (   habi32 - habi13)
+	;
+	if ( sensor123 < 12) {
+		actuador123 cale = 20 }
+} 

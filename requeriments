@@ -1,0 +1,5 @@
+graphviz-0.20.1
+networkx-2.8.8
+ply.yacc
+lexer
+sys

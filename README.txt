@@ -1,0 +1,1 @@
+Ejecutar el comando: " python3 parser.py <archivo que vas a probar>"
