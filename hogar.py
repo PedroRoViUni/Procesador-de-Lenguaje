@@ -44,9 +44,16 @@ class Habitacion:
     
         
 class Norma:
-    
-    def __init__(self, ):
-        pass
+
+    def __init__(self, simbolo):
+        self.simbolo=simbolo
+
+class Normas:
+     def __init__(self, id, simbolo, valor):
+        self.id=id
+        self.simbolo=simbolo
+        self.valor=valor
+        
 
 class Dimension:
     

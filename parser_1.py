@@ -1,7 +1,7 @@
 import sys
 import ply.yacc as yacc
 from lexer import tokens
-from hogar import Hogar, Habitacion, Acceso, Norma, Sensor, Dimension, Actuador
+from hogar import Hogar, Habitacion, Acceso, Norma, Sensor, Dimension, Actuador, Norma, Normas
 
 def p_prog(p)  : 
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
@@ -87,7 +87,7 @@ def p_sen(p) :
             | sen_gas 
             | sen_fue 
             | sen_hum'''
-    print('p_sen ')
+    print('p_sen')
 
 def p_actuas(p) : 
     '''actuas : actua actuas_1'''
@@ -141,27 +141,40 @@ def p_reglas1(p):
 def p_iff(p) : 
     '''iff : SI PARENI conds PAREND LLAVEI conse LLAVED'''
     print('p_iff')
+    print(p[3])
 
 def p_conds(p) : 
     '''conds : condi conds_1'''
+
+    p[0]=p[1]
+    p[0].append(p[2])
     print('p_conds')
 
 def p_conds_1(p):
     '''conds_1 : 
                 | AND condi conds_1
                 | OR condi conds_1'''
+    if len(p) == 1:
+       p[0] = []
+    else:
+        p[0].append(p[1],p[2])
+        
 
 def p_condi(p) : 
     '''condi : condiB
                 | condiN'''
+    p[0]=[]
+    p[0].append([1])
     print('p_condi')
 
 def p_condiB(p):
     '''condiB : ID compaB TRUE
                 | ID compaB FALSE'''
+    p[0] = Normas(p[1], p[2].simbolo, p[3])
 
 def p_condiN(p):
     '''condiN : ID compa NUM'''
+    p[0] = Normas(p[1], p[2].simbolo, p[3])
 
 def p_conse(p) : 
     '''conse : actua conse_1'''
@@ -175,11 +188,13 @@ def p_compa(p) :
     '''compa : MENOR 
             | MAYOR 
             | IGUAL'''
+    p[0] = Norma(p[1])
     print('p_compa')
 
 def p_compaB(p):
     '''compaB : IGUALC
             | DISTIN'''
+    p[0]=Norma(p[1])
 
 def p_error(t):   
     
