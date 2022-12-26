@@ -5,17 +5,17 @@ import graphviz
 
 class Hogar:
     
-    def __init__(self, idHogar, arrayHabitaciones, arrayAccesos, arrayReglas):
+    def __init__(self, idHogar, Habitaciones, Accesos, Reglas):
         self.idHogar=idHogar
-        self.arrayHabitaciones=arrayHabitaciones
-        self.arrayAccesos=arrayAccesos
-        self.arrayReglas=arrayReglas
+        self.Habitaciones=Habitaciones
+        self.Accesos=Accesos
+        self.Reglas=Reglas
         
-    def crearGrafo(self, arrayHabitaciones, arrayAccesos):
+    def crearGrafo(self, Habitaciones, Accesos):
         grafo = nx.Graph()
-        for habitacion in arrayHabitaciones:
+        for habitacion in Habitaciones:
             grafo.add_node(habitacion.id)
-        for acceso in arrayAccesos:
+        for acceso in Accesos:
             grafo.add_edge(acceso.id1, acceso.id2)
             
     def exportarGrafo(self,grafo,idHogar):
@@ -63,10 +63,10 @@ class Dimension:
 
 class Sensor:
         
-        def __init__(self, id, tipo, dimension):
+        def __init__(self, id, tipo, valor):
             self.id=id
             self.tipo=tipo
-            self.dimension=dimension
+            self.valor=valor
         def __str__(self) -> str:
             return self.id
 

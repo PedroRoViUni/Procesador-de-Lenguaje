@@ -29,7 +29,8 @@ def p_hab(p) :
     '''hab : ID COMA dim PCOMA sens PCOMA actuas'''
     print('p_hab')
     p[0] = Habitacion(p[1],p[3].num1,p[3].num2,p[5],p[7])
-    print(str(p[5][1])+"  "+str(p[5][2]))
+    for i in p[5]:
+        print(str(i))
     print("-------------")
     print(len(p[5]))
 
@@ -44,9 +45,9 @@ def p_dim(p) :
 
 def p_sens(p) :
     '''sens : sen sens_1'''
-    p[0] = p[2]
-    p[0].insert(0,p[1])
-    
+    p[1].extend(p[2])
+    p[0]=p[1]
+    print(p[2][0].tipo)
 
 
 def p_sens_1(p):
@@ -55,10 +56,13 @@ def p_sens_1(p):
     if len(p)>1 and p[2] is not None:
         p[0]= p[2]
         #p[0].insert(0,p[1])(p[2])
+        print("se la metí")
+        print(len(p[0]))
         
     
     if len(p)>2 and p[3] is not None:
-         p[0].append(p[3])
+         p[0].extend(p[3])
+         print("se la metí 2 veze")
 
 def p_sen_lum(p) :
     '''sen_lum : ID LUM IGUAL NUM'''
@@ -101,7 +105,7 @@ def p_sen(p) :
             | sen_fue
             | sen_hum'''
     p[0]= []
-    p[0].append(p[1])
+    p[0].insert(0,p[1])
 
 def p_actuas(p) :
     '''actuas : actua actuas_1'''
