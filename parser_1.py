@@ -1,7 +1,11 @@
+#!/usr/bin/python3
+# -- coding: utf-8 --
+'''Parser'''
+
 import sys
 import ply.yacc as yacc
 from lexer import tokens
-from hogar import Hogar, Habitacion, Acceso, Norma, Sensor, Dimension, Actuador, Norma, Normas
+from hogar import Hogar, Habitacion, Acceso, Sensor, Dimension, Condiciones, Consecuencia, Regla, Actuador
 
 def p_prog(p)  :
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
@@ -47,8 +51,6 @@ def p_sens(p) :
     '''sens : sen sens_1'''
     p[1].extend(p[2])
     p[0]=p[1]
-    print(p[2][0].tipo)
-
 
 def p_sens_1(p):
     '''sens_1 :
@@ -56,13 +58,10 @@ def p_sens_1(p):
     if len(p)>1 and p[2] is not None:
         p[0]= p[2]
         #p[0].insert(0,p[1])(p[2])
-        print("se la metí")
-        print(len(p[0]))
         
     
     if len(p)>2 and p[3] is not None:
          p[0].extend(p[3])
-         print("se la metí 2 veze")
 
 def p_sen_lum(p) :
     '''sen_lum : ID LUM IGUAL NUM'''
@@ -110,11 +109,18 @@ def p_sen(p) :
 def p_actuas(p) :
     '''actuas : actua actuas_1'''
     print('p_actuas')
+    if p[2] is not None :
+        p[1].extend(p[2])
+    p[0]=p[1]
 
 def p_actuas_1(p):
-     '''actuas_1 :
+    '''actuas_1 :
                     | COMA actua actuas_1
     '''
+    if len(p)>1 and p[2] is not None:
+        p[0]=p[2]
+        if p[3] is not None:
+            p[0].extend(p[3])
 
 def p_actua(p) :
     '''actua : actua_cale
@@ -123,97 +129,123 @@ def p_actua(p) :
             | actua_roci
             | actua_alar'''
     print('p_actua')
+    p[0]= []
+    p[0].append(p[1])
 
 def p_actua_cale(p) :
     '''actua_cale : ID CALE IGUAL NUM'''
     print('p_actua_cale')
+    p[0] = Actuador(p[1],p[2],p[4])
 
 def p_actua_air(p)  :
     '''actua_air  : ID AIRE IGUAL NUM'''
     print('p_actua_air')
+    p[0] = Actuador(p[1],p[2],p[4])
 
 def p_actua_pers(p) :
     '''actua_pers : ID PERS IGUAL SUBIR
                     | ID PERS IGUAL BAJAR
                     | ID PERS IGUAL PARAR'''
     print('p_actua_pers')
+    p[0] = Actuador(p[1],p[2],p[4])
 
 def p_actua_roci(p) :
     '''actua_roci : ID ROCI IGUAL TRUE
                     | ID ROCI IGUAL FALSE'''
     print('p_actua_roci')
+    p[0] = Actuador(p[1],p[2],p[4])
 
 def p_actua_alar(p) :
     '''actua_alar : ID ALAR IGUAL TRUE
                     | ID ALAR IGUAL FALSE'''
     print('p_actua_alar')
+    p[0] = Actuador(p[1],p[2],p[4])
 
 def p_reglas(p) :
     '''reglas : iff reglas_1'''
     print('p_reglas')
+    p[0]=p[1]
+    if p[2] is not None:
+        p[0].extend(p[2])
 
 def p_reglas1(p):
     '''reglas_1 :
                 | PCOMA iff reglas_1'''
+    if len(p) > 1 and p[2] is not None:
+        p[0]=p[2]
+        if p[3] is not None:
+            p[0].extend(p[3])
 
 def p_iff(p) :
     '''iff : SI PARENI conds PAREND LLAVEI conse LLAVED'''
     print('p_iff')
+    p[0]= []
+    p[0].append(Regla(p[3],p[6]))
     print(p[3])
 
 def p_conds(p) :
     '''conds : condi conds_1'''
-
     p[0]=p[1]
-    for element in p[2]:
-        p[0].insert(element)
+    if p[2] is not None:
+        p[0].extend(p[2])
     print('p_conds')
 
 def p_conds_1(p):
     '''conds_1 :
                 | AND condi conds_1
                 | OR condi conds_1'''
-    if len(p) == 1:
-       p[0] = []
-    else:
-        p[0].insert(p[1],p[2])
-        
+    if len(p) > 1 and p[2] is not None:
+        p[0] = []
+        p[0].append(p[1])
+        p[0].extend(p[2])
+        if p[3] is not None:
+            p[0].extend(p[3])
+    
 
 def p_condi(p) :
     '''condi : condiB
                 | condiN'''
     p[0]=[]
-    p[0].append([1])
+    p[0].append(p[1])
     print('p_condi')
 
 def p_condiB(p):
     '''condiB : ID compaB TRUE
                 | ID compaB FALSE'''
-    p[0] = Normas(p[1], p[2].simbolo, p[3])
+    p[0] = Condiciones(p[1], p[2], p[3])
 
 def p_condiN(p):
     '''condiN : ID compa NUM'''
-    p[0] = Normas(p[1], p[2].simbolo, p[3])
+    p[0] = Condiciones(p[1], p[2], p[3])
 
 def p_conse(p) :
     '''conse : actua conse_1'''
     print('p_conse')
+    p[0]=[]
+    conse = Consecuencia(p[1][0].id, p[1][0].tipo, p[1][0].accion)
+    p[0].append(conse)
+    if p[2] is not None:
+        p[0].extend(p[2])
 
 def p_conse_1(p):
     '''conse_1 :
                 | COMA actua conse_1'''
+    if len(p)>1 and p[2] is not None:
+        p[0]=p[2]
+        if p[3] is not None:
+            p[0].extend(p[3])
 
 def p_compa(p) :
     '''compa : MENOR
             | MAYOR
             | IGUAL'''
-    p[0] = Norma(p[1])
+    p[0] = p[1]
     print('p_compa')
 
 def p_compaB(p):
     '''compaB : IGUALC
             | DISTIN'''
-    p[0]=Norma(p[1])
+    p[0]=p[1]
 
 def p_error(t):
 

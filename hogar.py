@@ -1,6 +1,5 @@
 
 import networkx as nx
-import graphviz
 
 
 class Hogar:
@@ -43,16 +42,22 @@ class Habitacion:
         self.arrayActuadores=arrayActuadores
     
         
-class Norma:
-
-    def __init__(self, simbolo):
-        self.simbolo=simbolo
-
-class Normas:
-     def __init__(self, id, simbolo, valor):
+class Condiciones:
+    def __init__(self, id, simbolo, valor):
         self.id=id
         self.simbolo=simbolo
         self.valor=valor
+
+class Consecuencia:
+    def __init__(self, idActuador, tipoActuador, variable):
+        self.idActuador=idActuador
+        self.tipoActuador=tipoActuador
+        self.variable=variable
+
+class Regla:
+    def __init__(self, Condiciones, Consecuencias):
+        self.Condiciones=Condiciones
+        self.Consecuencias=Consecuencias
         
 
 class Dimension:
@@ -72,7 +77,9 @@ class Sensor:
 
 class Actuador:
         
-        def __init__(self, id, tipo, dimension):
+        def __init__(self, id, tipo, accion):
             self.id=id
             self.tipo=tipo
-            self.dimension=dimension
+            self.accion=accion
+        def __str__(self) -> str:
+            return self.id

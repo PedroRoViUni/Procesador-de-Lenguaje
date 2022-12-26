@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+# -- coding: utf-8 --
+'''Lexer'''
+
 import sys
 import ply.lex as lex
 
