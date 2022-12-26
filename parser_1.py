@@ -1,6 +1,7 @@
 import sys
 import ply.yacc as yacc
 from lexer import tokens
+from hogar import Hogar, Habitacion, Acceso, Norma, Sensor, Dimension, Actuador
 
 def p_prog(p)  : 
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
@@ -34,7 +35,8 @@ def p_acc(p) :
 
 def p_dim(p) : 
     '''dim : PARENI NUM COMA NUM PAREND'''
-    print('p_dim')
+    dim = Dimension(p[2],p[4])
+    print('p_dim: ('+dim.num1+', '+dim.num2+')')
 
 def p_sens(p) : 
     '''sens : sen sens_1'''
@@ -47,30 +49,36 @@ def p_sens_1(p):
     
 def p_sen_lum(p) : 
     '''sen_lum : ID LUM IGUAL NUM'''
-    print('p_sen_lum')
+    sen_lum = Sensor(p[1],p[2],p[4])
+    print('p_sen_lum: '+sen_lum.id+' '+sen_lum.tipo+' '+sen_lum.dimension)
 
 def p_sen_tem(p) : 
     '''sen_tem : ID TEM IGUAL NUM'''
-    print('p_sen_temp')
+    sen_tem = Sensor(p[1],p[2],p[4])
+    print('p_sen_temp: '+sen_tem.id+' '+sen_tem.tipo+' '+sen_tem.dimension)
 
 def p_sen_pre(p) : 
     '''sen_pre : ID PRE IGUAL TRUE 
                  | ID PRE IGUAL FALSE'''
-    print('p_sen_pre')
+    sen_pre = Sensor(p[1],p[2],p[4])
+    print('p_sen_pre: '+sen_pre.id+' '+sen_pre.tipo+' '+sen_pre.dimension)
 
 def p_sen_gas(p) :
     '''sen_gas : ID GAS IGUAL TRUE
                 | ID GAS IGUAL FALSE '''
-    print('p_sen_gas')
+    sen_gas = Sensor(p[1],p[2],p[4])
+    print('p_sen_gas: '+sen_gas.id+' '+sen_gas.tipo+' '+sen_gas.dimension)
 
 def p_sen_fue(p) : 
     '''sen_fue : ID FUE IGUAL TRUE
                 | ID FUE IGUAL FALSE'''
-    print('p_sen_fue')
+    sen_fue = Sensor(p[1],p[2],p[4])
+    print('p_sen_fue: '+sen_fue.id+' '+sen_fue.tipo+' '+sen_fue.dimension)
 
 def p_sen_hum(p) : 
     '''sen_hum : ID HUM IGUAL NUM'''
-    print('p_sen_hum')
+    sen_hum = Sensor(p[1],p[2],p[4])
+    print('p_sen_hum: '+sen_hum.id+' '+sen_hum.tipo+' '+sen_hum.dimension)
 
 def p_sen(p) : 
     '''sen : sen_lum 
@@ -79,7 +87,7 @@ def p_sen(p) :
             | sen_gas 
             | sen_fue 
             | sen_hum'''
-    print('p_sen')
+    print('p_sen ')
 
 def p_actuas(p) : 
     '''actuas : actua actuas_1'''
@@ -172,10 +180,6 @@ def p_compa(p) :
 def p_compaB(p):
     '''compaB : IGUALC
             | DISTIN'''
-
-def p_error(p):
-    print('Error en la sintaxis')
-
 
 def p_error(t):   
     

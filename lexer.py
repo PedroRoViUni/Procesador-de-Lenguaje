@@ -34,8 +34,6 @@ tokens = (
     'IGUAL',
     'MENOR',
     'MAYOR',
-    'CORCHI',
-    'CORCHD',
     'GUION',
     'IGUALC',
     'DISTIN',
@@ -73,8 +71,6 @@ t_PAREND = r'\)'
 t_IGUAL  = r'=' 
 t_MENOR  = r'<' 
 t_MAYOR  = r'>' 
-t_CORCHI = r'\[' 
-t_CORCHD = r'\]' 
 t_GUION  = r'-'
 t_IGUALC = r'=='
 t_DISTIN = r'!='

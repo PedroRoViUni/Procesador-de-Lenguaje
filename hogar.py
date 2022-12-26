@@ -18,7 +18,7 @@ class Hogar:
         for acceso in arrayAccesos:
             grafo.add_edge(acceso.id1, acceso.id2)
             
-    def exportarGrafo(grafo,idHogar):
+    def exportarGrafo(self,grafo,idHogar):
         A = nx.nx_agraph.to_agraph(grafo)
         A.layout('dot')
         A.draw(str(idHogar)+".png")
@@ -47,3 +47,23 @@ class Norma:
     
     def __init__(self, ):
         pass
+
+class Dimension:
+    
+    def __init__(self, num1, num2):
+        self.num1=num1
+        self.num2=num2
+
+class Sensor:
+        
+        def __init__(self, id, tipo, dimension):
+            self.id=id
+            self.tipo=tipo
+            self.dimension=dimension
+
+class Actuador:
+        
+        def __init__(self, id, tipo, dimension):
+            self.id=id
+            self.tipo=tipo
+            self.dimension=dimension
