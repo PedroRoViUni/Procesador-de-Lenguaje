@@ -29,9 +29,9 @@ def p_hab(p) :
     '''hab : ID COMA dim PCOMA sens PCOMA actuas'''
     print('p_hab')
     p[0] = Habitacion(p[1],p[3].num1,p[3].num2,p[5],p[7])
-    print(str(p[5][2])+"  "+str(p[5][3]))
+    print(str(p[5][1])+"  "+str(p[5][2]))
     print("-------------")
-    print(p[5][3][3])
+    print(len(p[5]))
 
 def p_acc(p) :
     '''acc : PARENI ID GUION ID PAREND'''
@@ -44,11 +44,8 @@ def p_dim(p) :
 
 def p_sens(p) :
     '''sens : sen sens_1'''
-    p[0]
     p[0] = p[2]
     p[0].insert(0,p[1])
-    if p[2] is not None:
-        p[0].append(p[2])
     
 
 
@@ -56,8 +53,8 @@ def p_sens_1(p):
     '''sens_1 :
                     | COMA sen sens_1'''
     if len(p)>1 and p[2] is not None:
-        p[0] = []
-        p[0].append(p[2])
+        p[0]= p[2]
+        #p[0].insert(0,p[1])(p[2])
         
     
     if len(p)>2 and p[3] is not None:
@@ -103,7 +100,8 @@ def p_sen(p) :
             | sen_gas
             | sen_fue
             | sen_hum'''
-    p[0] = p[1]
+    p[0]= []
+    p[0].append(p[1])
 
 def p_actuas(p) :
     '''actuas : actua actuas_1'''
@@ -157,27 +155,41 @@ def p_reglas1(p):
 def p_iff(p) :
     '''iff : SI PARENI conds PAREND LLAVEI conse LLAVED'''
     print('p_iff')
+    print(p[3])
 
 def p_conds(p) :
     '''conds : condi conds_1'''
+
+    p[0]=p[1]
+    for element in p[2]:
+        p[0].insert(element)
     print('p_conds')
 
 def p_conds_1(p):
     '''conds_1 :
                 | AND condi conds_1
                 | OR condi conds_1'''
+    if len(p) == 1:
+       p[0] = []
+    else:
+        p[0].insert(p[1],p[2])
+        
 
 def p_condi(p) :
     '''condi : condiB
                 | condiN'''
+    p[0]=[]
+    p[0].append([1])
     print('p_condi')
 
 def p_condiB(p):
     '''condiB : ID compaB TRUE
                 | ID compaB FALSE'''
+    p[0] = Normas(p[1], p[2].simbolo, p[3])
 
 def p_condiN(p):
     '''condiN : ID compa NUM'''
+    p[0] = Normas(p[1], p[2].simbolo, p[3])
 
 def p_conse(p) :
     '''conse : actua conse_1'''
@@ -191,11 +203,13 @@ def p_compa(p) :
     '''compa : MENOR
             | MAYOR
             | IGUAL'''
+    p[0] = Norma(p[1])
     print('p_compa')
 
 def p_compaB(p):
     '''compaB : IGUALC
             | DISTIN'''
+    p[0]=Norma(p[1])
 
 def p_error(t):
 
