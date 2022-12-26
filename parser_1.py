@@ -1,7 +1,7 @@
 import sys
 import ply.yacc as yacc
 from lexer import tokens
-from hogar import Hogar, Habitacion, Acceso, Norma, Sensor, Dimension, Actuador
+from hogar import Hogar, Habitacion, Acceso, Norma, Sensor, Dimension, Actuador, Norma, Normas
 
 def p_prog(p)  :
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
