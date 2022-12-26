@@ -1,7 +1,7 @@
 newHogar asd12 {
-	( habi32 , ( 12 , 14 ) ; sensor123 lum = 10 ; actuador123 pers = subir ) 
+	( habi32 , (12 , 14) ; sensor123 lum = 10, senso28 lum = 77, senso39 lum = 78; actuador123 pers = subir ) 
 	,
-	( habi13 ,  (13 , 81 ) ; sensor124 lum = 20; acuador123 pers = bajar)  
+	( habi13 ,  (13 , 81) ; sensor124 lum = 20, senso27 lum = 21, senso29 lum = 23; acuador123 pers = bajar)  
 	;
 	accesos: (   habi32 - habi13)
 	;

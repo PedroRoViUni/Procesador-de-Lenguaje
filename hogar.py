@@ -67,6 +67,8 @@ class Sensor:
             self.id=id
             self.tipo=tipo
             self.dimension=dimension
+        def __str__(self) -> str:
+            return self.id
 
 class Actuador:
         
