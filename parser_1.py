@@ -8,11 +8,19 @@ from lexer import tokens
 from hogar import Hogar, Habitacion, Acceso, Sensor, Dimension, Condiciones, Consecuencia, Regla, Actuador
 import simulation
 
+used_ids = set()
+
+def add_id(id_name):
+    if id_name in used_ids:
+        print("Error: ID="+str(id_name)+" ya en uso")
+        return
+    used_ids.add(id_name)
+    
 def p_prog(p)  :
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
     p[0]=Hogar(p[2],p[4],p[7],p[9])
     print ('prog')
-
+    
 def p_l_hab(p) :
     '''l_hab : PARENI hab PAREND l_hab_1'''
     p[0]=[]
@@ -21,7 +29,6 @@ def p_l_hab(p) :
     p[0].insert(0,p[2])
     print('l_hab')
     
-
 def p_l_hab_1(p):
     '''l_hab_1 :
                     | COMA PARENI hab PAREND l_hab_1
@@ -57,6 +64,7 @@ def p_hab(p) :
     '''hab : ID COMA dim PCOMA sens PCOMA actuas'''
     print('p_hab')
     p[0] = Habitacion(p[1],p[3].num1,p[3].num2,p[5],p[7])
+    add_id(p[1])
 
 def p_acc(p) :
     '''acc : PARENI ID GUION ID PAREND'''
