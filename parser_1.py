@@ -9,34 +9,53 @@ from hogar import Hogar, Habitacion, Acceso, Sensor, Dimension, Condiciones, Con
 
 def p_prog(p)  :
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
+    p[0]=Hogar(p[2],p[4],p[7],p[9])
     print ('prog')
 
 def p_l_hab(p) :
     '''l_hab : PARENI hab PAREND l_hab_1'''
+    p[0]=[]
+    for hab in p[4]:
+        p[0].append(hab)
+    p[0].insert(0,p[2])
     print('l_hab')
+    
 
 def p_l_hab_1(p):
     '''l_hab_1 :
                     | COMA PARENI hab PAREND l_hab_1
     '''
 
+    if len(p)>1 and p[3] is not None:
+        p[0]=[]
+        p[0].append(p[3])
+        if p[5] is not None:
+            for hab in p[5]:
+                p[0].append(hab) 
+
 def p_l_acc(p) :
     '''l_acc : acc l_acc_1'''
+    p[0]=[]
+    for hab in p[2]:
+        p[0].append(hab)
+    p[0].insert(0,p[1])
     print ('l_acc')
 
 def p_l_acc_1(p):
     '''l_acc_1 :
                     | COMA acc l_acc_1
     '''
+    if len(p)>1 and p[2] is not None:
+        p[0]=[]
+        p[0].append(p[2])
+        if p[3] is not None:
+            for acc in p[3]:
+                p[0].append(acc) 
 
 def p_hab(p) :
     '''hab : ID COMA dim PCOMA sens PCOMA actuas'''
     print('p_hab')
     p[0] = Habitacion(p[1],p[3].num1,p[3].num2,p[5],p[7])
-    for i in p[5]:
-        print(str(i))
-    print("-------------")
-    print(len(p[5]))
 
 def p_acc(p) :
     '''acc : PARENI ID GUION ID PAREND'''
@@ -181,7 +200,6 @@ def p_iff(p) :
     print('p_iff')
     p[0]= []
     p[0].append(Regla(p[3],p[6]))
-    print(p[3])
 
 def p_conds(p) :
     '''conds : condi conds_1'''
