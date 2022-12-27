@@ -6,6 +6,7 @@ import sys
 import ply.yacc as yacc
 from lexer import tokens
 from hogar import Hogar, Habitacion, Acceso, Sensor, Dimension, Condiciones, Consecuencia, Regla, Actuador
+import simulation
 
 def p_prog(p)  :
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
@@ -276,5 +277,8 @@ def main(argv):
     input_stream = open(argv[1],"r")
     result = parser.parse(input_stream.read())
     print(result)
+    simulation.drawgraph(result)
+
+
 
 if __name__ == '__main__'   : main(sys.argv)
