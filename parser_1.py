@@ -332,7 +332,9 @@ def p_conse_2(p):
     '''conse_2 : ID IGUAL NUM 
                 | ID IGUAL SUBIR 
                 | ID IGUAL BAJAR 
-                | ID IGUAL PARAR '''
+                | ID IGUAL PARAR
+                | ID IGUAL TRUE
+                | ID IGUAL FALSE '''
     p[0] = Consecuencia(p[1], p[3])
     checkList_act(p[1])
 
