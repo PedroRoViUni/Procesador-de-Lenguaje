@@ -12,41 +12,64 @@ used_ids = set()
 used_ids_hab = set()
 used_ids_sen = set()
 used_ids_act = set()
+todo_ok=True
+mensaje=""
 
 def add_id(id_name):
     if id_name in used_ids:
-        print("Error: ID="+str(id_name)+" ya en uso")
+        global todo_ok
+        global mensaje
+        todo_ok = False
+        mensaje += "Error: ID="+str(id_name)+" ya en uso.\n"
     used_ids.add(id_name)
     
 def add_id_hab(id_name):
     if id_name in used_ids_hab:
-        print("Error: Habitación ID="+str(id_name)+" ya en uso")
+        global todo_ok
+        global mensaje
+        todo_ok = False
+        mensaje += "Error: Habitación ID="+str(id_name)+" ya en uso.\n"
     used_ids_hab.add(id_name)
     add_id(id_name)
     
 def add_id_sen(id_name):
     if id_name in used_ids_sen:
-        print("Error: Sensor ID="+str(id_name)+" ya en uso")
+        global todo_ok
+        global mensaje
+        todo_ok = False
+        mensaje += "Error: Sensor ID="+str(id_name)+" ya en uso.\n"
     used_ids_sen.add(id_name)
     add_id(id_name)
     
 def add_id_act(id_name):
     if id_name in used_ids_act:
-        print("Error: Actuador ID="+str(id_name)+" ya en uso")
+        global todo_ok
+        global mensaje
+        todo_ok = False
+        mensaje += "Error: Actuador ID="+str(id_name)+" ya en uso.\n"
     used_ids_act.add(id_name)
     add_id(id_name)
     
 def checkList_hab(id_name):
     if id_name not in used_ids_hab:
-        print("Error: "+ id_name+", habitación no declarada")     
+        global todo_ok
+        global mensaje
+        todo_ok = False
+        mensaje += "Error: Habitación ID="+str(id_name)+" no declarada.\n"     
     
 def checkList_sen(id_name):
     if id_name not in used_ids_sen:
-        print("Error: "+ id_name+", sensor no declarado")     
+        global todo_ok
+        global mensaje
+        todo_ok = False
+        mensaje += "Error: Sensor ID="+str(id_name)+" no declarado.\n"     
     
 def checkList_act(id_name):
     if id_name not in used_ids_act:
-        print("Error: "+ id_name+", actuador no declarado")  
+        global todo_ok
+        global mensaje
+        todo_ok = False
+        mensaje += "Error: Actuador ID="+str(id_name)+" no declarado.\n"  
         
 def p_prog(p)  :
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
@@ -56,8 +79,9 @@ def p_prog(p)  :
 def p_l_hab(p) :
     '''l_hab : PARENI hab PAREND l_hab_1'''
     p[0]=[]
-    for hab in p[4]:
-        p[0].append(hab)
+    if p[4] is not None:
+        for hab in p[4]:
+            p[0].append(hab)
     p[0].insert(0,p[2])
     print('l_hab')
     
@@ -76,8 +100,9 @@ def p_l_hab_1(p):
 def p_l_acc(p) :
     '''l_acc : acc l_acc_1'''
     p[0]=[]
-    for hab in p[2]:
-        p[0].append(hab)
+    if p[2] is not None:
+        for hab in p[2]:
+            p[0].append(hab)
     p[0].insert(0,p[1])
     print ('l_acc')
 
@@ -285,21 +310,32 @@ def p_condiN(p):
     checkList_sen(p[1])
 
 def p_conse(p) :
-    '''conse : actua conse_1'''
+    '''conse : conse_2 conse_1'''
     print('p_conse')
     p[0]=[]
-    conse = Consecuencia(p[1][0].id, p[1][0].tipo, p[1][0].accion)
-    p[0].append(conse)
     if p[2] is not None:
-        p[0].extend(p[2])
+        for con in p[2]:
+            p[0].append(con)
+    p[0].insert(0,p[1])
 
 def p_conse_1(p):
     '''conse_1 :
-                | COMA actua conse_1'''
+                | COMA conse_2 conse_1'''
     if len(p)>1 and p[2] is not None:
-        p[0]=p[2]
+        p[0]=[]
+        p[0].append(p[2])
         if p[3] is not None:
-            p[0].extend(p[3])
+            for con in p[3]:
+                p[0].append(con)
+
+def p_conse_2(p):
+    '''conse_2 : ID IGUAL NUM 
+                | ID IGUAL SUBIR 
+                | ID IGUAL BAJAR 
+                | ID IGUAL PARAR '''
+    p[0] = Consecuencia(p[1], p[3])
+    checkList_act(p[1])
+
 
 def p_compa(p) :
     '''compa : MENOR
@@ -324,8 +360,10 @@ def main(argv):
     input_stream = open(argv[1],"r")
     result = parser.parse(input_stream.read())
     print(result)
-    simulation.drawgraph(result)
-
-
+    if todo_ok:
+        simulation.drawgraph(result)
+    else:
+        print('Error en el archivo de entrada')
+        print(mensaje)
 
 if __name__ == '__main__'   : main(sys.argv)

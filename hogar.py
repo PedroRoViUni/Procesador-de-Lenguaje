@@ -49,9 +49,8 @@ class Condiciones:
         self.valor=valor
 
 class Consecuencia:
-    def __init__(self, idActuador, tipoActuador, variable):
+    def __init__(self, idActuador, variable):
         self.idActuador=idActuador
-        self.tipoActuador=tipoActuador
         self.variable=variable
 
 class Regla:
