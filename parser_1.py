@@ -9,13 +9,45 @@ from hogar import Hogar, Habitacion, Acceso, Sensor, Dimension, Condiciones, Con
 import simulation
 
 used_ids = set()
+used_ids_hab = set()
+used_ids_sen = set()
+used_ids_act = set()
 
 def add_id(id_name):
     if id_name in used_ids:
         print("Error: ID="+str(id_name)+" ya en uso")
-        return
     used_ids.add(id_name)
     
+def add_id_hab(id_name):
+    if id_name in used_ids_hab:
+        print("Error: Habitación ID="+str(id_name)+" ya en uso")
+    used_ids_hab.add(id_name)
+    add_id(id_name)
+    
+def add_id_sen(id_name):
+    if id_name in used_ids_sen:
+        print("Error: Sensor ID="+str(id_name)+" ya en uso")
+    used_ids_sen.add(id_name)
+    add_id(id_name)
+    
+def add_id_act(id_name):
+    if id_name in used_ids_act:
+        print("Error: Actuador ID="+str(id_name)+" ya en uso")
+    used_ids_act.add(id_name)
+    add_id(id_name)
+    
+def checkList_hab(id_name):
+    if id_name not in used_ids_hab:
+        print("Error: "+ id_name+", habitación no declarada")     
+    
+def checkList_sen(id_name):
+    if id_name not in used_ids_sen:
+        print("Error: "+ id_name+", sensor no declarado")     
+    
+def checkList_act(id_name):
+    if id_name not in used_ids_act:
+        print("Error: "+ id_name+", actuador no declarado")  
+        
 def p_prog(p)  :
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
     p[0]=Hogar(p[2],p[4],p[7],p[9])
@@ -64,11 +96,13 @@ def p_hab(p) :
     '''hab : ID COMA dim PCOMA sens PCOMA actuas'''
     print('p_hab')
     p[0] = Habitacion(p[1],p[3].num1,p[3].num2,p[5],p[7])
-    add_id(p[1])
+    add_id_hab(p[1])
 
 def p_acc(p) :
     '''acc : PARENI ID GUION ID PAREND'''
     p[0] = Acceso(p[2],p[4])
+    checkList_hab(p[2])
+    checkList_hab(p[4])
 
 def p_dim(p) :
     '''dim : PARENI NUM COMA NUM PAREND'''
@@ -86,43 +120,41 @@ def p_sens_1(p):
     if len(p)>1 and p[2] is not None:
         p[0]= p[2]
         #p[0].insert(0,p[1])(p[2])
-        
-    
     if len(p)>2 and p[3] is not None:
          p[0].extend(p[3])
 
 def p_sen_lum(p) :
     '''sen_lum : ID LUM IGUAL NUM'''
     p[0] = Sensor(p[1],p[2],p[4])
-
+    add_id_sen(p[1])
 
 def p_sen_tem(p) :
     '''sen_tem : ID TEM IGUAL NUM'''
     p[0] = Sensor(p[1],p[2],p[4])
-
+    add_id_sen(p[1])
 
 def p_sen_pre(p) :
     '''sen_pre : ID PRE IGUAL TRUE
                  | ID PRE IGUAL FALSE'''
     p[0] = Sensor(p[1],p[2],p[4])
-
+    add_id_sen(p[1])
 
 def p_sen_gas(p) :
     '''sen_gas : ID GAS IGUAL TRUE
                 | ID GAS IGUAL FALSE '''
     p[0] = Sensor(p[1],p[2],p[4])
-
+    add_id_sen(p[1])
 
 def p_sen_fue(p) :
     '''sen_fue : ID FUE IGUAL TRUE
                 | ID FUE IGUAL FALSE'''
     p[0] = Sensor(p[1],p[2],p[4])
-
+    add_id_sen(p[1])
 
 def p_sen_hum(p) :
     '''sen_hum : ID HUM IGUAL NUM'''
     p[0] = Sensor(p[1],p[2],p[4])
-
+    add_id_sen(p[1])
 
 def p_sen(p) :
     '''sen : sen_lum
@@ -164,11 +196,13 @@ def p_actua_cale(p) :
     '''actua_cale : ID CALE IGUAL NUM'''
     print('p_actua_cale')
     p[0] = Actuador(p[1],p[2],p[4])
+    add_id_act(p[1])
 
 def p_actua_air(p)  :
     '''actua_air  : ID AIRE IGUAL NUM'''
     print('p_actua_air')
     p[0] = Actuador(p[1],p[2],p[4])
+    add_id_act(p[1])
 
 def p_actua_pers(p) :
     '''actua_pers : ID PERS IGUAL SUBIR
@@ -176,18 +210,21 @@ def p_actua_pers(p) :
                     | ID PERS IGUAL PARAR'''
     print('p_actua_pers')
     p[0] = Actuador(p[1],p[2],p[4])
+    add_id_act(p[1])
 
 def p_actua_roci(p) :
     '''actua_roci : ID ROCI IGUAL TRUE
                     | ID ROCI IGUAL FALSE'''
     print('p_actua_roci')
     p[0] = Actuador(p[1],p[2],p[4])
+    add_id_act(p[1])
 
 def p_actua_alar(p) :
     '''actua_alar : ID ALAR IGUAL TRUE
                     | ID ALAR IGUAL FALSE'''
     print('p_actua_alar')
     p[0] = Actuador(p[1],p[2],p[4])
+    add_id_act(p[1])
 
 def p_reglas(p) :
     '''reglas : iff reglas_1'''
@@ -240,10 +277,12 @@ def p_condiB(p):
     '''condiB : ID compaB TRUE
                 | ID compaB FALSE'''
     p[0] = Condiciones(p[1], p[2], p[3])
+    checkList_sen(p[1])
 
 def p_condiN(p):
     '''condiN : ID compa NUM'''
     p[0] = Condiciones(p[1], p[2], p[3])
+    checkList_sen(p[1])
 
 def p_conse(p) :
     '''conse : actua conse_1'''
