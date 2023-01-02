@@ -10,8 +10,12 @@ import simulation
 
 used_ids = set()
 used_ids_hab = set()
-used_ids_sen = set()
-used_ids_act = set()
+used_ids_senB = set()
+used_ids_senN = set()
+used_ids_act = set() 
+used_ids_actN = set()
+used_ids_actB = set()
+used_ids_actR = set()
 todo_ok=True
 mensaje=""
 
@@ -32,22 +36,35 @@ def add_id_hab(id_name):
     used_ids_hab.add(id_name)
     add_id(id_name)
     
-def add_id_sen(id_name):
-    if id_name in used_ids_sen:
-        global todo_ok
-        global mensaje
-        todo_ok = False
-        mensaje += "Error: Sensor ID="+str(id_name)+" ya en uso.\n"
-    used_ids_sen.add(id_name)
-    add_id(id_name)
-    
-def add_id_act(id_name):
+def add_id_sen(id_name,tipo):
+    global todo_ok
+    global mensaje
+    if tipo==0 :
+        if id_name in used_ids_senN:
+            todo_ok = False
+            mensaje += "Error: Sensor ID="+str(id_name)+" ya en uso.\n"
+        used_ids_senN.add(id_name)
+        add_id(id_name)
+    else :
+        if id_name in used_ids_senB:
+            todo_ok = False
+            mensaje += "Error: Sensor ID="+str(id_name)+" ya en uso.\n"
+        used_ids_senB.add(id_name)
+        add_id(id_name)
+        
+def add_id_act(id_name,tipo):
+    global todo_ok
+    global mensaje
     if id_name in used_ids_act:
-        global todo_ok
-        global mensaje
         todo_ok = False
         mensaje += "Error: Actuador ID="+str(id_name)+" ya en uso.\n"
     used_ids_act.add(id_name)
+    if (tipo==0):
+        used_ids_actN.add(id_name)
+    if (tipo==1):
+        used_ids_actB.add(id_name)
+    if (tipo==2):
+        used_ids_actR.add(id_name)
     add_id(id_name)
     
 def checkList_hab(id_name):
@@ -57,17 +74,28 @@ def checkList_hab(id_name):
         todo_ok = False
         mensaje += "Error: Habitación ID="+str(id_name)+" no declarada.\n"     
     
-def checkList_sen(id_name):
-    if id_name not in used_ids_sen:
-        global todo_ok
-        global mensaje
-        todo_ok = False
-        mensaje += "Error: Sensor ID="+str(id_name)+" no declarado.\n"     
+def checkList_sen(id_name,tipo):
+    global todo_ok
+    global mensaje
+    if tipo==0:
+        if id_name not in used_ids_senN:
+            todo_ok = False
+            if id_name not in used_ids_senB:
+                mensaje += "Error: Sensor ID="+str(id_name)+" no declarado.\n"
+            else:
+                mensaje += "Error: Sensor ID="+str(id_name)+" no es de tipo boolean.\n"
+    else:
+        if id_name not in used_ids_senB:
+            todo_ok = False
+            if id_name not in used_ids_senN:
+                mensaje += "Error: Sensor ID="+str(id_name)+" no declarado.\n"
+            else:
+                mensaje += "Error: Sensor ID="+str(id_name)+" no es de tipo entero.\n"
     
 def checkList_act(id_name):
+    global todo_ok
+    global mensaje
     if id_name not in used_ids_act:
-        global todo_ok
-        global mensaje
         todo_ok = False
         mensaje += "Error: Actuador ID="+str(id_name)+" no declarado.\n"  
         
@@ -151,35 +179,40 @@ def p_sens_1(p):
 def p_sen_lum(p) :
     '''sen_lum : ID LUM IGUAL NUM'''
     p[0] = Sensor(p[1],p[2],p[4])
-    add_id_sen(p[1])
+    add_id_sen(p[1],0)
 
 def p_sen_tem(p) :
     '''sen_tem : ID TEM IGUAL NUM'''
     p[0] = Sensor(p[1],p[2],p[4])
-    add_id_sen(p[1])
+    add_id_sen(p[1],0)
+    if( int(p[4])>50 or int(p[4])<0 ):
+        global todo_ok
+        todo_ok = False
+        global mensaje
+        mensaje+=("Error en senor "+p[1]+", los sensores de temperatura solo admiten valores de 0 a 50")
 
 def p_sen_pre(p) :
     '''sen_pre : ID PRE IGUAL TRUE
                  | ID PRE IGUAL FALSE'''
     p[0] = Sensor(p[1],p[2],p[4])
-    add_id_sen(p[1])
+    add_id_sen(p[1],1)
 
 def p_sen_gas(p) :
     '''sen_gas : ID GAS IGUAL TRUE
                 | ID GAS IGUAL FALSE '''
     p[0] = Sensor(p[1],p[2],p[4])
-    add_id_sen(p[1])
+    add_id_sen(p[1],1)
 
 def p_sen_fue(p) :
     '''sen_fue : ID FUE IGUAL TRUE
                 | ID FUE IGUAL FALSE'''
     p[0] = Sensor(p[1],p[2],p[4])
-    add_id_sen(p[1])
+    add_id_sen(p[1],1)
 
 def p_sen_hum(p) :
     '''sen_hum : ID HUM IGUAL NUM'''
     p[0] = Sensor(p[1],p[2],p[4])
-    add_id_sen(p[1])
+    add_id_sen(p[1],0)
 
 def p_sen(p) :
     '''sen : sen_lum
@@ -222,6 +255,11 @@ def p_actua_cale(p) :
     print('p_actua_cale')
     p[0] = Actuador(p[1],p[2],p[4])
     add_id_act(p[1])
+    if( int(p[4])>50 or int(p[4])<0 ):
+        global todo_ok
+        todo_ok = False
+        global mensaje
+        mensaje+=("Error en actuador "+p[1]+", la calefacción solo admite valores de 0 a 50")
 
 def p_actua_air(p)  :
     '''actua_air  : ID AIRE IGUAL NUM'''
@@ -302,12 +340,12 @@ def p_condiB(p):
     '''condiB : ID compaB TRUE
                 | ID compaB FALSE'''
     p[0] = Condiciones(p[1], p[2], p[3])
-    checkList_sen(p[1])
+    checkList_sen(p[1],1)
 
 def p_condiN(p):
     '''condiN : ID compa NUM'''
     p[0] = Condiciones(p[1], p[2], p[3])
-    checkList_sen(p[1])
+    checkList_sen(p[1],0)
 
 def p_conse(p) :
     '''conse : conse_2 conse_1'''
@@ -352,7 +390,6 @@ def p_compaB(p):
     p[0]=p[1]
 
 def p_error(t):
-
     print("error en linea " + str(t.lineno)+ " delante de "+ str(t.value))
 
 

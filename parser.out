@@ -68,11 +68,13 @@ Rule 62    conse_2 -> ID IGUAL NUM
 Rule 63    conse_2 -> ID IGUAL SUBIR
 Rule 64    conse_2 -> ID IGUAL BAJAR
 Rule 65    conse_2 -> ID IGUAL PARAR
-Rule 66    compa -> MENOR
-Rule 67    compa -> MAYOR
-Rule 68    compa -> IGUAL
-Rule 69    compaB -> IGUALC
-Rule 70    compaB -> DISTIN
+Rule 66    conse_2 -> ID IGUAL TRUE
+Rule 67    conse_2 -> ID IGUAL FALSE
+Rule 68    compa -> MENOR
+Rule 69    compa -> MAYOR
+Rule 70    compa -> IGUAL
+Rule 71    compaB -> IGUALC
+Rule 72    compaB -> DISTIN
 
 Terminals, with rules where they appear
 
@@ -83,20 +85,20 @@ AND                  : 52
 BAJAR                : 40 64
 CALE                 : 37
 COMA                 : 4 7 8 10 13 31 61
-DISTIN               : 70
-FALSE                : 17 19 21 43 45 57
+DISTIN               : 72
+FALSE                : 17 19 21 43 45 57 67
 FUE                  : 20 21
 GAS                  : 18 19
 GUION                : 9
 HUM                  : 22
-ID                   : 1 8 9 9 14 15 16 17 18 19 20 21 22 37 38 39 40 41 42 43 44 45 56 57 58 62 63 64 65
-IGUAL                : 14 15 16 17 18 19 20 21 22 37 38 39 40 41 42 43 44 45 62 63 64 65 68
-IGUALC               : 69
+ID                   : 1 8 9 9 14 15 16 17 18 19 20 21 22 37 38 39 40 41 42 43 44 45 56 57 58 62 63 64 65 66 67
+IGUAL                : 14 15 16 17 18 19 20 21 22 37 38 39 40 41 42 43 44 45 62 63 64 65 66 67 70
+IGUALC               : 71
 LLAVED               : 1 49
 LLAVEI               : 1 49
 LUM                  : 14
-MAYOR                : 67
-MENOR                : 66
+MAYOR                : 69
+MENOR                : 68
 NEWH                 : 1
 NUM                  : 10 10 14 15 22 37 38 58 62
 OR                   : 53
@@ -110,7 +112,7 @@ ROCI                 : 42 43
 SI                   : 49
 SUBIR                : 39 63
 TEM                  : 15
-TRUE                 : 16 18 20 42 44 56
+TRUE                 : 16 18 20 42 44 56 66
 error                : 
 
 Nonterminals, with rules where they appear
@@ -775,11 +777,11 @@ state 65
     (56) condiB -> ID . compaB TRUE
     (57) condiB -> ID . compaB FALSE
     (58) condiN -> ID . compa NUM
-    (69) compaB -> . IGUALC
-    (70) compaB -> . DISTIN
-    (66) compa -> . MENOR
-    (67) compa -> . MAYOR
-    (68) compa -> . IGUAL
+    (71) compaB -> . IGUALC
+    (72) compaB -> . DISTIN
+    (68) compa -> . MENOR
+    (69) compa -> . MAYOR
+    (70) compa -> . IGUAL
 
     IGUALC          shift and go to state 91
     DISTIN          shift and go to state 92
@@ -1017,39 +1019,39 @@ state 90
 
 state 91
 
-    (69) compaB -> IGUALC .
+    (71) compaB -> IGUALC .
 
-    TRUE            reduce using rule 69 (compaB -> IGUALC .)
-    FALSE           reduce using rule 69 (compaB -> IGUALC .)
+    TRUE            reduce using rule 71 (compaB -> IGUALC .)
+    FALSE           reduce using rule 71 (compaB -> IGUALC .)
 
 
 state 92
 
-    (70) compaB -> DISTIN .
+    (72) compaB -> DISTIN .
 
-    TRUE            reduce using rule 70 (compaB -> DISTIN .)
-    FALSE           reduce using rule 70 (compaB -> DISTIN .)
+    TRUE            reduce using rule 72 (compaB -> DISTIN .)
+    FALSE           reduce using rule 72 (compaB -> DISTIN .)
 
 
 state 93
 
-    (66) compa -> MENOR .
+    (68) compa -> MENOR .
 
-    NUM             reduce using rule 66 (compa -> MENOR .)
+    NUM             reduce using rule 68 (compa -> MENOR .)
 
 
 state 94
 
-    (67) compa -> MAYOR .
+    (69) compa -> MAYOR .
 
-    NUM             reduce using rule 67 (compa -> MAYOR .)
+    NUM             reduce using rule 69 (compa -> MAYOR .)
 
 
 state 95
 
-    (68) compa -> IGUAL .
+    (70) compa -> IGUAL .
 
-    NUM             reduce using rule 68 (compa -> IGUAL .)
+    NUM             reduce using rule 70 (compa -> IGUAL .)
 
 
 state 96
@@ -1212,6 +1214,8 @@ state 113
     (63) conse_2 -> . ID IGUAL SUBIR
     (64) conse_2 -> . ID IGUAL BAJAR
     (65) conse_2 -> . ID IGUAL PARAR
+    (66) conse_2 -> . ID IGUAL TRUE
+    (67) conse_2 -> . ID IGUAL FALSE
 
     ID              shift and go to state 127
 
@@ -1349,6 +1353,8 @@ state 127
     (63) conse_2 -> ID . IGUAL SUBIR
     (64) conse_2 -> ID . IGUAL BAJAR
     (65) conse_2 -> ID . IGUAL PARAR
+    (66) conse_2 -> ID . IGUAL TRUE
+    (67) conse_2 -> ID . IGUAL FALSE
 
     IGUAL           shift and go to state 143
 
@@ -1468,6 +1474,8 @@ state 142
     (63) conse_2 -> . ID IGUAL SUBIR
     (64) conse_2 -> . ID IGUAL BAJAR
     (65) conse_2 -> . ID IGUAL PARAR
+    (66) conse_2 -> . ID IGUAL TRUE
+    (67) conse_2 -> . ID IGUAL FALSE
 
     ID              shift and go to state 127
 
@@ -1479,11 +1487,15 @@ state 143
     (63) conse_2 -> ID IGUAL . SUBIR
     (64) conse_2 -> ID IGUAL . BAJAR
     (65) conse_2 -> ID IGUAL . PARAR
+    (66) conse_2 -> ID IGUAL . TRUE
+    (67) conse_2 -> ID IGUAL . FALSE
 
     NUM             shift and go to state 145
     SUBIR           shift and go to state 146
     BAJAR           shift and go to state 147
     PARAR           shift and go to state 148
+    TRUE            shift and go to state 149
+    FALSE           shift and go to state 150
 
 
 state 144
@@ -1495,7 +1507,7 @@ state 144
     LLAVED          reduce using rule 60 (conse_1 -> .)
     COMA            shift and go to state 142
 
-    conse_1                        shift and go to state 149
+    conse_1                        shift and go to state 151
 
 state 145
 
@@ -1530,6 +1542,22 @@ state 148
 
 
 state 149
+
+    (66) conse_2 -> ID IGUAL TRUE .
+
+    COMA            reduce using rule 66 (conse_2 -> ID IGUAL TRUE .)
+    LLAVED          reduce using rule 66 (conse_2 -> ID IGUAL TRUE .)
+
+
+state 150
+
+    (67) conse_2 -> ID IGUAL FALSE .
+
+    COMA            reduce using rule 67 (conse_2 -> ID IGUAL FALSE .)
+    LLAVED          reduce using rule 67 (conse_2 -> ID IGUAL FALSE .)
+
+
+state 151
 
     (61) conse_1 -> COMA conse_2 conse_1 .
 
