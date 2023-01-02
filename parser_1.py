@@ -92,12 +92,24 @@ def checkList_sen(id_name,tipo):
             else:
                 mensaje += "Error: Sensor ID="+str(id_name)+" no es de tipo entero.\n"
     
-def checkList_act(id_name):
+def checkList_act(id_name, tipo):
     global todo_ok
     global mensaje
     if id_name not in used_ids_act:
         todo_ok = False
-        mensaje += "Error: Actuador ID="+str(id_name)+" no declarado.\n"  
+        mensaje += "Error: Actuador ID="+str(id_name)+" no declarado.\n"
+    if tipo==0:
+        if id_name not in used_ids_actN:
+            todo_ok = False
+            mensaje += "Error: Actuador ID="+str(id_name)+" es de tipo entero.\n"
+    elif tipo==1:
+        if id_name not in used_ids_actB:
+            todo_ok = False
+            mensaje += "Error: Actuador ID="+str(id_name)+" es de tipo boolean.\n"
+    elif tipo==2:
+        if id_name not in used_ids_actR:
+            todo_ok = False
+            mensaje += "Error: Actuador ID="+str(id_name)+" es de tipo acción (SUBIR/BAJAR/PARAR).\n" 
         
 def p_prog(p)  :
     '''prog  : NEWH ID LLAVEI l_hab PCOMA ACCE  l_acc  PCOMA reglas LLAVED'''
@@ -254,7 +266,7 @@ def p_actua_cale(p) :
     '''actua_cale : ID CALE IGUAL NUM'''
     print('p_actua_cale')
     p[0] = Actuador(p[1],p[2],p[4])
-    add_id_act(p[1])
+    add_id_act(p[1],0)
     if( int(p[4])>50 or int(p[4])<0 ):
         global todo_ok
         todo_ok = False
@@ -265,7 +277,7 @@ def p_actua_air(p)  :
     '''actua_air  : ID AIRE IGUAL NUM'''
     print('p_actua_air')
     p[0] = Actuador(p[1],p[2],p[4])
-    add_id_act(p[1])
+    add_id_act(p[1],0)
 
 def p_actua_pers(p) :
     '''actua_pers : ID PERS IGUAL SUBIR
@@ -273,21 +285,21 @@ def p_actua_pers(p) :
                     | ID PERS IGUAL PARAR'''
     print('p_actua_pers')
     p[0] = Actuador(p[1],p[2],p[4])
-    add_id_act(p[1])
+    add_id_act(p[1],2)
 
 def p_actua_roci(p) :
     '''actua_roci : ID ROCI IGUAL TRUE
                     | ID ROCI IGUAL FALSE'''
     print('p_actua_roci')
     p[0] = Actuador(p[1],p[2],p[4])
-    add_id_act(p[1])
+    add_id_act(p[1],1)
 
 def p_actua_alar(p) :
     '''actua_alar : ID ALAR IGUAL TRUE
                     | ID ALAR IGUAL FALSE'''
     print('p_actua_alar')
     p[0] = Actuador(p[1],p[2],p[4])
-    add_id_act(p[1])
+    add_id_act(p[1],1)
 
 def p_reglas(p) :
     '''reglas : iff reglas_1'''
@@ -348,7 +360,9 @@ def p_condiN(p):
     checkList_sen(p[1],0)
 
 def p_conse(p) :
-    '''conse : conse_2 conse_1'''
+    '''conse : conse_2 conse_1
+                | conse_3 conse_1
+                | conse_4 conse_1'''
     print('p_conse')
     p[0]=[]
     if p[2] is not None:
@@ -358,7 +372,9 @@ def p_conse(p) :
 
 def p_conse_1(p):
     '''conse_1 :
-                | COMA conse_2 conse_1'''
+                | COMA conse_2 conse_1
+                | COMA conse_3 conse_1
+                | COMA conse_4 conse_1'''
     if len(p)>1 and p[2] is not None:
         p[0]=[]
         p[0].append(p[2])
@@ -367,15 +383,22 @@ def p_conse_1(p):
                 p[0].append(con)
 
 def p_conse_2(p):
-    '''conse_2 : ID IGUAL NUM 
-                | ID IGUAL SUBIR 
-                | ID IGUAL BAJAR 
-                | ID IGUAL PARAR
-                | ID IGUAL TRUE
-                | ID IGUAL FALSE '''
+    '''conse_2 : ID IGUAL NUM '''
     p[0] = Consecuencia(p[1], p[3])
-    checkList_act(p[1])
+    checkList_act(p[1],0)
 
+def p_conse_3(p):
+    '''conse_3 : ID IGUAL SUBIR 
+                | ID IGUAL BAJAR 
+                | ID IGUAL PARAR'''
+    p[0] = Consecuencia(p[1], p[3])
+    checkList_act(p[1],2)
+
+def p_conse_4(p):
+    '''conse_4 : ID IGUAL TRUE
+                | ID IGUAL FALSE'''
+    p[0] = Consecuencia(p[1], p[3])
+    checkList_act(p[1],1)
 
 def p_compa(p) :
     '''compa : MENOR
