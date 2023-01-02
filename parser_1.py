@@ -363,7 +363,7 @@ def main(argv):
     result = parser.parse(input_stream.read())
     print(result)
     if todo_ok:
-        simulation.drawgraph(result)
+        simulation.simulation(result)
     else:
         print('Error en el archivo de entrada')
         print(mensaje)
