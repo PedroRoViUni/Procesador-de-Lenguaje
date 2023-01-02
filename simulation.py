@@ -12,7 +12,10 @@ G = nx.Graph()
 def simulation(hogar):
     consNodos(hogar.Habitaciones)
     consAristas(hogar.Accesos)
-    diccionarios()
+    
+    crearSensores(diccionarios())
+    print(comprobarRegla(hogar.Reglas[0]))
+    
     
     print(" _____                        _____  _\n" +     
           "|  __ \                      |  __ \| |\n" + 
@@ -212,11 +215,27 @@ def valorBool(tipo):
     return opcion
 
 def diccionarios():
-    diccionario = {}
+    dicSensores = {}
     for node in G.nodes():
         for sensor in G.nodes[node]['hab'].arraySensores:
             id_sensor = sensor.id
             valor = sensor.valor
-            diccionario[id_sensor] = valor
-    print(diccionario)
+            dicSensores[id_sensor] = valor
+    return dicSensores
+
+def crearSensores(dicSensores):
+    
+    for sensor in dicSensores:
+        if dicSensores[sensor] == 'True':
+            globals()[sensor] = True
+        elif dicSensores[sensor] == 'False':
+            globals()[sensor] = False
+        else:
+            globals()[sensor] = int(dicSensores[sensor])
         
+def comprobarRegla(regla):
+    resultado = False 
+       
+    resultado = eval(regla.Condiciones[0].id + regla.Condiciones[0].simbolo + regla.Condiciones[0].valor)
+    
+    return resultado
