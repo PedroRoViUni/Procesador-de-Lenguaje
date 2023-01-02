@@ -201,7 +201,7 @@ def p_sen_tem(p) :
         global todo_ok
         todo_ok = False
         global mensaje
-        mensaje+=("Error en senor "+p[1]+", los sensores de temperatura solo admiten valores de 0 a 50")
+        mensaje+=("Error en la declaración del sensor "+p[1]+", los sensores de temperatura solo admiten valores de 0 a 50 \n")
 
 def p_sen_pre(p) :
     '''sen_pre : ID PRE IGUAL TRUE
@@ -271,13 +271,18 @@ def p_actua_cale(p) :
         global todo_ok
         todo_ok = False
         global mensaje
-        mensaje+=("Error en actuador "+p[1]+", la calefacción solo admite valores de 0 a 50")
+        mensaje+=("Error en la declaración del actuador "+p[1]+", la calefacción solo admite valores de 0 a 50\n")
 
 def p_actua_air(p)  :
     '''actua_air  : ID AIRE IGUAL NUM'''
     print('p_actua_air')
     p[0] = Actuador(p[1],p[2],p[4])
     add_id_act(p[1],0)
+    if( int(p[4])>50 or int(p[4])<0 ):
+        global todo_ok
+        todo_ok = False
+        global mensaje
+        mensaje+=("Error en la declaración del actuador "+p[1]+", el aire acondicionado solo admite valores de 0 a 50\n")
 
 def p_actua_pers(p) :
     '''actua_pers : ID PERS IGUAL SUBIR
@@ -386,6 +391,11 @@ def p_conse_2(p):
     '''conse_2 : ID IGUAL NUM '''
     p[0] = Consecuencia(p[1], p[3])
     checkList_act(p[1],0)
+    if( int(p[3])>50 or int(p[3])<0 ):
+        global todo_ok
+        todo_ok = False
+        global mensaje
+        mensaje+=("Error en actuador "+p[1]+" en las consecuencias, este actuador solo admite valores de 0 a 50\n")
 
 def p_conse_3(p):
     '''conse_3 : ID IGUAL SUBIR 
