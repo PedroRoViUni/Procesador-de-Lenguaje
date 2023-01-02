@@ -4,16 +4,16 @@
 
 import networkx as nx
 import matplotlib.pyplot as plt
-import networkx as nx
-from random import choice
-from matplotlib.animation import FuncAnimation
+import ply.yacc as yacc
+from lexer import tokens
 
 G = nx.Graph()
 
 def simulation(hogar):
     consNodos(hogar.Habitaciones)
     consAristas(hogar.Accesos)
-
+    diccionarios()
+    
     print(" _____                        _____  _\n" +     
           "|  __ \                      |  __ \| |\n" + 
           "| |  | | ___  _ __ ___   ___ | |__) | |\n" + 
@@ -128,14 +128,16 @@ def updateSensor(node):
     while True:
         try:
             opcion = int(input())
-            while opcion < 0 or opcion > len(sensores)-1:
+            while opcion < 0 or opcion > len(sensores):
                 print("Opcion fuera de rango, pruebe de nuevo.")
                 opcion = int(input())
             break
         except ValueError:
-            print('Please enter an integer.')
-    valor = input("Ha seleccionado el sensor " + sensores[opcion].id + " de tipo " + sensores[opcion].tipo + ", introduzca su nuevo valor: ")
-    sensores[opcion].valor = valor
+            print('Por favor, introduzca un entero.')
+
+    print("Ha seleccionado el sensor " + sensores[opcion].id + " de tipo " + sensores[opcion].tipo + ", introduzca su nuevo valor: ")
+    entrada = inputTipo(sensores[opcion].tipo)
+    sensores[opcion].valor = str(entrada)
 
     plt.clf()
     pos = nx.get_node_attributes(G, 'pos')
@@ -174,14 +176,47 @@ def consLabel(n, pos):
     nx.draw_networkx_labels(G, pos=pos_labels_sens, labels=labels_sens, font_size=10, font_family="Times New Roman", font_weight="bold")
     nx.draw_networkx_labels(G, pos=pos_labels_acts, labels=labels_acts, font_size=10, font_family="Times New Roman", font_weight="bold")
 
-    
+def inputTipo(tipo):
+    if tipo == 'lum':
+        entrada = valorNum(0, 100, tipo)
+    elif tipo == 'tem':
+        entrada = valorNum(0, 50, tipo)
+    elif tipo == 'pre':
+        entrada = valorNum(0, 100, tipo)
+    elif tipo == 'gas':
+        entrada = valorBool(tipo)
+    elif tipo == 'fue':
+        entrada = valorBool(tipo)
+    elif tipo == 'hum':
+        entrada = valorNum(0, 100, tipo)
+    return entrada
 
 
+def valorNum(numInicial, numFinal, tipo):
+    while True:
+        try:
+            opcion = int(input())
+            while opcion < numInicial or opcion > numFinal:
+                print("El tipo de sensor " + str(tipo) + ", solo admite enteros entre " + str(numInicial) + " y " + str(numFinal) + ". Pruebe de nuevo:")
+                opcion = int(input())
+            break
+        except ValueError:
+            print("Por favor, introduzca un entero.")  
+    return opcion
 
+def valorBool(tipo):
+    opcion = input()
+    while opcion not in ['True', 'False']:
+        print("El tipo de sensor " + tipo + ", solo admite los valores True y False. Pruebe de nuevo:")
+        opcion = input()
+    return opcion
 
-
-
-
-    
-
-
+def diccionarios():
+    diccionario = {}
+    for node in G.nodes():
+        for sensor in G.nodes[node]['hab'].arraySensores:
+            id_sensor = sensor.id
+            valor = sensor.valor
+            diccionario[id_sensor] = valor
+    print(diccionario)
+        
