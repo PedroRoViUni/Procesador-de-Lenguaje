@@ -1,12 +1,13 @@
 newHogar asd12 {
-	( habi32 , (12 , 14) ; sensor123 lum = 10, senso28 lum = 77, senso39 lum = 78, sensor126 gas = True, senso238 fue = False; actuador123 pers = subir ) 
+	( habi32 , (12 , 14) ; sensor123 lum = 8, senso28 lum = 77, senso39 lum = 78, sensor126 gas = True, senso238 fue = False; actuador123 pers = subir ) 
 	,
-	( habi13 ,  (13 , 81) ; sensor124 lum = 20, senso27 lum = 21, senso29 lum = 23, sensor323 lum = 10, senso228 lum = 77; acuador123 pers = bajar)  
+	( habi13 ,  (13 , 81) ; sensor124 lum = 20, senso27 lum = 232, senso29 lum = 23, sensor323 lum = 10, senso228 lum = 77; actuador124 pers = bajar)  
 	,
-	( habi22 ,  (12 , 41) ; sensor23 lum = 20, senso24 lum = 21, senso49 tem = 49, sensor327 lum = 10, senso282 lum = 77; acuador156 pers = bajar)
+	( habi22 ,  (123 , 41) ; sensor23 lum = 20, senso24 lum = 21, senso49 lum = 23, sensor327 lum = 10, senso282 lum = 77; actuador156 pers = bajar)
 	;
 	accesos: (habi32 - habi13) , (habi13 - habi22), (habi32 - habi22)
 	;
-	if ( sensor123 == True and sensor124 > 10) {
-		actuador123 = 20}
+	if (sensor123 < 12 or senso228 > 60) {
+		actuador123 = 20, actuador156 = 1}
 } 
+
