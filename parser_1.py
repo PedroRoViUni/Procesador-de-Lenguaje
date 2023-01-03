@@ -339,7 +339,7 @@ def p_conds_1(p):
                 | AND condi conds_1
                 | OR condi conds_1'''
     if len(p) > 1 and p[2] is not None:
-        pivote=" "+p[1]+" "+p[2]
+        pivote=p[1]+" "+p[2]
         p[0]=pivote
         if p[3] is not None:
             p[0]+=" "+p[3]
@@ -353,12 +353,12 @@ def p_condi(p) :
 def p_condiB(p):
     '''condiB : ID compaB TRUE
                 | ID compaB FALSE'''
-    p[0] = str(p[1]+" "+p[2]+" "+ p[3])
+    p[0] = str("("+p[1]+" "+p[2]+" "+ p[3]+")")
     checkList_sen(p[1],1)
 
 def p_condiN(p):
     '''condiN : ID compa NUM'''
-    p[0] = str(p[1]+" "+p[2]+" "+ p[3])
+    p[0] = str("("+p[1]+" "+p[2]+" "+ p[3]+")")
     checkList_sen(p[1],0)
 
 def p_conse(p) :

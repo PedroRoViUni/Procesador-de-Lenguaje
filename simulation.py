@@ -225,39 +225,19 @@ def diccionarios():
 def crearSensores(dicSensores):
     
     for sensor in dicSensores:
-        if dicSensores[sensor] == 'True' or 'true':
+        isTrue=["True","true"]
+        isFalse=["False","false"]
+        if dicSensores[sensor] in isTrue:
             globals()[sensor] = True
-        elif dicSensores[sensor] == 'False' or 'false':
+        elif dicSensores[sensor] in isFalse:
             globals()[sensor] = False
         else:
             globals()[sensor] = int(dicSensores[sensor])
-        
-# def comprobarRegla(regla):
-#     resultado = False
-#     condicion="" 
-#     i=0
-#     while i<len(regla.Condiciones):
-#         condicion+=regla.Condiciones[i].id + regla.Condiciones[i].simbolo + regla.Condiciones[i].valor   
-#         i+=1
-#         if i==len(regla.Condiciones):
-#             break
-#         condicion+=" "+regla.Condiciones[i]+" "
-#         i+=1
-#     resultado=eval(condicion)
-#     return resultado
-
-# def ejecutarRegla(regla,hogar):
-#     for cons in regla.Consecuencias:
-#         for hab in hogar.Habitaciones:
-#             for act in hab.arrayActuadores:
-#                 if cons.idActuador==act.id:
-#                     act.accion=cons.variable
-
-#     return hogar
 
 def ejecutarRegla(regla):
     crearSensores(diccionarios())
-    
+    #print(regla.Condiciones)
+    #print(str(eval(regla.Condiciones)))
     if eval(regla.Condiciones):
         for conse in regla.Consecuencias:
             for node in G.nodes():
