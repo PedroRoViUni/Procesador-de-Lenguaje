@@ -16,7 +16,7 @@ def simulation(hogar):
     crearSensores(diccionarios())
     for regla in hogar.Reglas:
         if comprobarRegla(regla):
-            print(True)
+            hogar=ejecutarRegla(regla,hogar)
     
     
     print(" _____                        _____  _\n" +     
@@ -248,3 +248,13 @@ def comprobarRegla(regla):
         i+=1
     resultado=eval(condicion)
     return resultado
+
+def ejecutarRegla(regla,hogar):
+    for cons in regla.Consecuencias:
+        for hab in hogar.Habitaciones:
+            for act in hab.arrayActuadores:
+                if cons.idActuador==act.id:
+                    act.accion=cons.variable
+
+    return hogar
+            
