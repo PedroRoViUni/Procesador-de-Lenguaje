@@ -23,10 +23,10 @@ def simulation(hogar):
           "| |__| | (_) | | | | | | (_) | |    | |____ \n" +
           "|_____/ \___/|_| |_| |_|\___/|_|    |______|")
     print("\033[1m"+"| BIENVENID@.\n| Seleccione una opcion:"+"\033[0m")
-    print("| 1.-  Comenzar simulacion.\n| X.-   Salir de la aplicacion.")
+    print("| 1.-  Comenzar simulacion.\n| X.-  Salir de la aplicacion.")
     opcion = input()
     if opcion == "1":
-        drawgraph()
+        drawgraph(hogar)
 
     else: 
         print("¡Hasta pronto!")
@@ -42,7 +42,7 @@ def consAristas(accesos):
     for acc in accesos:
         G.add_edge(acc.id1, acc.id2)
 
-def drawgraph():
+def drawgraph(hogar):
     plt.ion()
 
     pos = nx.spring_layout(G)
@@ -59,9 +59,9 @@ def drawgraph():
 
     plt.margins(0.2)
     plt.show(block=False)
-    menuPrincipal()
+    menuPrincipal(hogar)
 
-def menuPrincipal():
+def menuPrincipal(hogar):
     i = 0
     print("\033[1m"+"\nSelecciona la habitacion en la que comenzar la simulacion:"+"\033[0m")
     habitaciones = list(G.nodes())
@@ -80,20 +80,20 @@ def menuPrincipal():
 
     node = habitaciones[opcion]
     updateNode(node)
-    menu(node)
+    menu(node,hogar)
 
 def updateNode(node):
     pos = nx.get_node_attributes(G, 'pos')
     nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:green", node_size=10000)
 
-def menu(node):
+def menu(node,hogar):
     i = 0
     print("\033[1m"+"\nSe encuentra en " + node + ". ¿Que accion desea realizar a continuacion?"+"\033[0m")
     print("1.-  Cambiar valor de sensores.\n2.-  Moverse hacia habitacion accesible.\nX.-  Salir de la aplicacion.")
     opcion = input()
 
     if opcion=="1":
-        updateSensor(node)
+        updateSensor(node,hogar)
 
     elif opcion=="2":
         print("\033[1m"+"\nIntroduzca la habitacion deseada: "+"\033[0m")
@@ -115,12 +115,12 @@ def menu(node):
         pos = nx.get_node_attributes(G, 'pos')
         nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:red", node_size=10000)
         updateNode(nodeVec)
-        menu(nodeVec)
+        menu(nodeVec,hogar)
 
     else:
         quit()
 
-def updateSensor(node):
+def updateSensor(node,hogar):
     i = 0
     print("\033[1m"+"\n¿Que sensor quiere modificar?"+"\033[0m")
     sensores = G.nodes[node]['hab'].arraySensores
@@ -141,6 +141,9 @@ def updateSensor(node):
     entrada = inputTipo(sensores[opcion].tipo)
     sensores[opcion].valor = str(entrada)
 
+    for regla in hogar.Reglas:
+        ejecutarRegla(regla)
+
     plt.clf()
     pos = nx.get_node_attributes(G, 'pos')
     nx.draw(G,pos=pos,with_labels=True, edge_color="red",
@@ -153,7 +156,7 @@ def updateSensor(node):
 
     plt.margins(0.2)
     updateNode(node)
-    menu(node)
+    menu(node,hogar)
 
 def consLabel(n, pos):
     sensores = []
@@ -244,4 +247,3 @@ def ejecutarRegla(regla):
                 for act in G.nodes[node]['hab'].arrayActuadores:
                     if act.id == conse.idActuador:
                         act.accion = conse.variable
-                        print(act.id + " = " + act.accion)
