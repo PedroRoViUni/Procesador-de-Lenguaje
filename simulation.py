@@ -13,10 +13,11 @@ def simulation(hogar):
     consNodos(hogar.Habitaciones)
     consAristas(hogar.Accesos)
     
-    crearSensores(diccionarios())
+    #crearSensores(diccionarios())
     for regla in hogar.Reglas:
-        if comprobarRegla(regla):
-            hogar=ejecutarRegla(regla,hogar)
+        print(regla)
+    #    if comprobarRegla(regla):
+    #        hogar=ejecutarRegla(regla,hogar)
     
     
     print(" _____                        _____  _\n" +     
@@ -228,9 +229,9 @@ def diccionarios():
 def crearSensores(dicSensores):
     
     for sensor in dicSensores:
-        if dicSensores[sensor] == 'True':
+        if dicSensores[sensor] == 'True' or 'true':
             globals()[sensor] = True
-        elif dicSensores[sensor] == 'False':
+        elif dicSensores[sensor] == 'False' or 'false':
             globals()[sensor] = False
         else:
             globals()[sensor] = int(dicSensores[sensor])
