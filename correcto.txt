@@ -9,5 +9,9 @@ newHogar asd12 {
 	;
 	if ( sensor123 < 11 and sensor124 > 10) {
 		actuador123 = 20}
+	;
+	if (sensor23 <21){
+		actuador156 = subir
+	}
 } 
 

@@ -14,7 +14,9 @@ def simulation(hogar):
     consAristas(hogar.Accesos)
     
     crearSensores(diccionarios())
-    print(comprobarRegla(hogar.Reglas[0]))
+    for regla in hogar.Reglas:
+        if comprobarRegla(regla):
+            print(True)
     
     
     print(" _____                        _____  _\n" +     
@@ -234,8 +236,15 @@ def crearSensores(dicSensores):
             globals()[sensor] = int(dicSensores[sensor])
         
 def comprobarRegla(regla):
-    resultado = False 
-       
-    resultado = eval(regla.Condiciones[0].id + regla.Condiciones[0].simbolo + regla.Condiciones[0].valor)
-    
+    resultado = False
+    condicion="" 
+    i=0
+    while i<len(regla.Condiciones):
+        condicion+=regla.Condiciones[i].id + regla.Condiciones[i].simbolo + regla.Condiciones[i].valor   
+        i+=1
+        if i==len(regla.Condiciones):
+            break
+        condicion+=" "+regla.Condiciones[i]+" "
+        i+=1
+    resultado=eval(condicion)
     return resultado
