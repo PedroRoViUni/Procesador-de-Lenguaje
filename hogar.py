@@ -43,10 +43,10 @@ class Habitacion:
     
         
 class Condiciones:
-    def __init__(self, id, simbolo, valor):
-        self.id=id
-        self.simbolo=simbolo
-        self.valor=valor
+    def __init__(self, condicion):
+        self.condicion = condicion
+    def __str__(self) -> str:
+        return self.condicion
 
 class Consecuencia:
     def __init__(self, idActuador, variable):
@@ -57,8 +57,9 @@ class Regla:
     def __init__(self, Condiciones, Consecuencias):
         self.Condiciones=Condiciones
         self.Consecuencias=Consecuencias
+    def __str__(self) -> str:
+        return self.Condiciones
         
-
 class Dimension:
     
     def __init__(self, num1, num2):
