@@ -12,14 +12,10 @@ G = nx.Graph()
 def simulation(hogar):
     consNodos(hogar.Habitaciones)
     consAristas(hogar.Accesos)
-    
-    #crearSensores(diccionarios())
+
     for regla in hogar.Reglas:
-        print(regla)
-    #    if comprobarRegla(regla):
-    #        hogar=ejecutarRegla(regla,hogar)
-    
-    
+        ejecutarRegla(regla)
+
     print(" _____                        _____  _\n" +     
           "|  __ \                      |  __ \| |\n" + 
           "| |  | | ___  _ __ ___   ___ | |__) | |\n" + 
@@ -236,26 +232,42 @@ def crearSensores(dicSensores):
         else:
             globals()[sensor] = int(dicSensores[sensor])
         
-def comprobarRegla(regla):
-    resultado = False
-    condicion="" 
-    i=0
-    while i<len(regla.Condiciones):
-        condicion+=regla.Condiciones[i].id + regla.Condiciones[i].simbolo + regla.Condiciones[i].valor   
-        i+=1
-        if i==len(regla.Condiciones):
-            break
-        condicion+=" "+regla.Condiciones[i]+" "
-        i+=1
-    resultado=eval(condicion)
-    return resultado
+# def comprobarRegla(regla):
+#     resultado = False
+#     condicion="" 
+#     i=0
+#     while i<len(regla.Condiciones):
+#         condicion+=regla.Condiciones[i].id + regla.Condiciones[i].simbolo + regla.Condiciones[i].valor   
+#         i+=1
+#         if i==len(regla.Condiciones):
+#             break
+#         condicion+=" "+regla.Condiciones[i]+" "
+#         i+=1
+#     resultado=eval(condicion)
+#     return resultado
 
-def ejecutarRegla(regla,hogar):
-    for cons in regla.Consecuencias:
-        for hab in hogar.Habitaciones:
-            for act in hab.arrayActuadores:
-                if cons.idActuador==act.id:
-                    act.accion=cons.variable
+# def ejecutarRegla(regla,hogar):
+#     for cons in regla.Consecuencias:
+#         for hab in hogar.Habitaciones:
+#             for act in hab.arrayActuadores:
+#                 if cons.idActuador==act.id:
+#                     act.accion=cons.variable
 
-    return hogar
-            
+#     return hogar
+
+def ejecutarRegla(regla):
+    crearSensores(diccionarios())
+    
+    if eval(regla.Condiciones):
+        for conse in regla.Consecuencias:
+            for node in G.nodes():
+                for act in G.nodes[node]['hab'].arrayActuadores:
+                    if act.id == conse.idActuador:
+                        act.accion = conse.variable
+                        print(act.id + " = " + act.accion)
+    
+    
+
+
+
+    

@@ -42,11 +42,11 @@ class Habitacion:
         self.arrayActuadores=arrayActuadores
     
         
-class Condiciones:
-    def __init__(self, condicion):
-        self.condicion = condicion
-    def __str__(self) -> str:
-        return self.condicion
+# class Condiciones:
+#     def __init__(self, condicion):
+#         self.condicion = condicion
+#     def __str__(self) -> str:
+#         return self.condicion
 
 class Consecuencia:
     def __init__(self, idActuador, variable):
