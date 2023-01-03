@@ -265,9 +265,3 @@ def ejecutarRegla(regla):
                     if act.id == conse.idActuador:
                         act.accion = conse.variable
                         print(act.id + " = " + act.accion)
-    
-    
-
-
-
-    

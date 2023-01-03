@@ -5,7 +5,7 @@
 import sys
 import ply.yacc as yacc
 from lexer import tokens
-from hogar import Hogar, Habitacion, Acceso, Sensor, Dimension, Condiciones, Consecuencia, Regla, Actuador
+from hogar import Hogar, Habitacion, Acceso, Sensor, Dimension, Consecuencia, Regla, Actuador
 import simulation
 
 used_ids = set()
