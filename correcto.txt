@@ -7,7 +7,7 @@ newHogar asd12 {
 	;
 	accesos: (habi32 - habi13) , (habi13 - habi22), (habi32 - habi22)
 	;
-	if ( sensor123 < 11 and sensor124 > 10 or senso24 > 20) {
+	if ( sensor123 < 11 and sensor124 < 10 or senso24 > 20) {
 		actuador123 = 40}
 	;
 	if (sensor23 <21){
