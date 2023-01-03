@@ -49,8 +49,8 @@ def drawgraph(hogar):
     for n, p in pos.items():
         G.nodes[n]['pos'] = p  
 
-    nx.draw(G,pos=pos,with_labels=True, edge_color="red",
-        node_color="tab:red",node_size=10000,
+    nx.draw(G,pos=pos,with_labels=True, edge_color="grey",
+        node_color="tab:grey",node_size=16000, node_shape="s",
         font_color="white",font_size=15,font_family="Times New Roman", font_weight="bold",
         width=5)
     
@@ -84,7 +84,7 @@ def menuPrincipal(hogar):
 
 def updateNode(node):
     pos = nx.get_node_attributes(G, 'pos')
-    nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:green", node_size=10000)
+    nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:green", node_size=16000, node_shape="s")
 
 def menu(node,hogar):
     i = 0
@@ -113,7 +113,7 @@ def menu(node,hogar):
         nodeVec = vecinos[opcion]
         print(nodeVec)
         pos = nx.get_node_attributes(G, 'pos')
-        nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:red", node_size=10000)
+        nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:grey", node_size=16000, node_shape="s")
         updateNode(nodeVec)
         menu(nodeVec,hogar)
 
@@ -146,8 +146,8 @@ def updateSensor(node,hogar):
 
     plt.clf()
     pos = nx.get_node_attributes(G, 'pos')
-    nx.draw(G,pos=pos,with_labels=True, edge_color="red",
-        node_color="tab:red",node_size=10000,
+    nx.draw(G,pos=pos,with_labels=True, edge_color="grey",
+        node_color="tab:grey",node_size=16000, node_shape="s",
         font_color="white",font_size=15,font_family="Times New Roman", font_weight="bold",
         width=5)
 
@@ -162,8 +162,8 @@ def consLabel(n, pos):
     sensores = []
     actuadores = []
 
-    pos_labels_sens = {node: (pos[node][0], pos[node][1] - 0.3) for node in G.nodes()}
-    pos_labels_acts = {node: (pos[node][0], pos[node][1] + 0.3) for node in G.nodes()}
+    pos_labels_sens = {node: (pos[node][0], pos[node][1] - 0.27) for node in G.nodes()}
+    pos_labels_acts = {node: (pos[node][0], pos[node][1] + 0.26) for node in G.nodes()}
 
     for sen in G.nodes[n]['hab'].arraySensores:
         sensores.append(sen.id + " " + sen.tipo + " = " + sen.valor + "\n")

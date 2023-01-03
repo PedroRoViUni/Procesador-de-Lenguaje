@@ -353,7 +353,7 @@ def p_condi(p) :
 def p_condiB(p):
     '''condiB : ID compaB TRUE
                 | ID compaB FALSE'''
-    p[0] = str("("+p[1]+" "+p[2]+" "+ p[3]+")")
+    p[0] = str("("+p[1]+" "+p[2]+" "+ p[3].capitalize()+")")
     checkList_sen(p[1],1)
 
 def p_condiN(p):
@@ -404,7 +404,7 @@ def p_conse_3(p):
 def p_conse_4(p):
     '''conse_4 : ID IGUAL TRUE
                 | ID IGUAL FALSE'''
-    p[0] = Consecuencia(p[1], p[3])
+    p[0] = Consecuencia(p[1], p[3].capitalize())
     checkList_act(p[1],1)
 
 def p_compa(p) :
@@ -421,6 +421,8 @@ def p_compaB(p):
 
 def p_error(t):
     print("error en linea " + str(t.lineno)+ " delante de "+ str(t.value))
+    global todo_ok
+    todo_ok = False
 
 
 def main(argv):
