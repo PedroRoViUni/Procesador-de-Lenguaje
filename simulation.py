@@ -84,7 +84,7 @@ def menuPrincipal(hogar):
 
 def updateNode(node):
     pos = nx.get_node_attributes(G, 'pos')
-    nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:green", node_size=16000, node_shape="s")
+    nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="MediumSeaGreen", node_size=16000, node_shape="s")
 
 def menu(node,hogar):
     i = 0
@@ -162,8 +162,8 @@ def consLabel(n, pos):
     sensores = []
     actuadores = []
 
-    pos_labels_sens = {node: (pos[node][0], pos[node][1] - 0.27) for node in G.nodes()}
-    pos_labels_acts = {node: (pos[node][0], pos[node][1] + 0.26) for node in G.nodes()}
+    pos_labels_sens = {node: (pos[node][0], pos[node][1] - 0.1) for node in G.nodes()}
+    pos_labels_acts = {node: (pos[node][0], pos[node][1] + 0.1) for node in G.nodes()}
 
     for sen in G.nodes[n]['hab'].arraySensores:
         sensores.append(sen.id + " " + sen.tipo + " = " + sen.valor + "\n")
