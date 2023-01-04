@@ -176,7 +176,8 @@ def p_dim(p) :
 
 def p_sens(p) :
     '''sens : sen sens_1'''
-    p[1].extend(p[2])
+    if p[2] is not None :
+        p[1].extend(p[2])
     p[0]=p[1]
 
 def p_sens_1(p):
