@@ -1,27 +1,62 @@
-newHogar asd12 {
-	( habi32 , (12 , 14) ; sensor123 lum = 7, senso28 lum = 77, senso39 lum = 78, sensor126 gas = true, senso238 fue = False; actuador123 cale = 30 ) 
-	,
-	( habi15 ,  (13 , 81) ; sensor124 lum = 20, senso27 lum = 22, senso29 lum = 23, sensor323 lum = 10, senso228 lum = 77; actuador124 pers = bajar, actuador128 cale = 32)
-	,
-	( habi16 ,  (18 , 71) ; sensor125 lum = 21, sensor28 lum = 22, sensor30 lum = 24, sensor325 lum = 12, sensor229 lum = 37; actuador126 pers = bajar, actuador129 cale = 22)  
-	,
-	( habi22 ,  (12 , 41) ; sensor23 lum = 20, senso24 lum = 21, senso49 lum = 23, sensor327 lum = 10, senso282 lum = 77; actuador156 pers = bajar)
+NewHogar correcto5 {
+	( pasillo0 , (5, 2);
+			sensorluz00 lum = 20, sensorincendios0 fue = False;
+			calefa00 cale = 20, alarma0 alar = False
+	),
+	( pasillo1 , (5, 2);
+			sensorluz04 lum = 20, sensorincendios2 fue = False;
+			calefa05 cale = 20 
+	),
+	( cocina1,  (5, 4) ;
+			sensorluz01 lum = 20, sensorincendios1 fue = False;
+			persiana01 pers = bajar, calefacocina0 cale = 10,
+			rociadores0 roci = False
+	),
+	( salon0, (5, 6);
+			sensorluz02 lum = 50;
+			calefa01 cale= 27
+	),
+	( wcprincipal0,  (12 , 41);
+			sensor23 lum = 20; 
+			actuador156 pers = bajar
+	),
+	( escaleras0, (4, 2); 
+			sensorluz03 lum = 0;
+			calefaescalera0 cale = 1
+	),
+	( salon1, (5, 6); 
+			sensorluz05 lum = 50; 
+			calefa10 cale= 37
+	),
+	( wc0, (6, 6); 
+			luz1 lum =1; 
+			cale390 cale=50
+	),
+	( habi01, (2, 2);
+			luz123 lum =3; 
+			cale88 cale=40
+	),
+	( habi2, (2,2); 
+			luzhabi2 lum=4; 
+			cale231 cale=47
+	),
+	( wcprivado0, (3,3); 
+			luzba1 lum=0; 
+			cale21 cale=12
+	);
+	accesos:  
+	(pasillo0 - cocina1), (pasillo0 - wcprincipal0), (pasillo0 - salon0),
+	(pasillo0 - escaleras0),(pasillo1 - escaleras0), (pasillo1 - salon1),
+	(pasillo1 - wc0), (pasillo1 - habi01), (pasillo1 - habi2), (habi01 - wcprivado0)
 	;
-	accesos: (habi32 - habi15) , (habi15 - habi22), (habi32 - habi22), (habi16 - habi32)
-	;
-	if ( sensor123 < 11 and sensor124 < 10 or senso24 > 20) {
-		actuador123 = 40}
-	;
-	if (senso238 == true){
-		actuador128 = 12
-	}
-	;
-	if (sensor23 <21){
-		actuador156 = subir
-	}
-	;
-	if (sensor123 > 69 ){
-		actuador123=49
+
+	if ( sensorincendios1 == True){
+		rociadores0 = True
+	};
+	if(sensorincendios0 == True or sensorincendios1 == True or sensorincendios2 == True){
+		alarma0 = True
+	};
+	if ( sensorluz05 < 11 and sensorluz00 < 10 ) {
+		calefa00 = 40
 	}
 } 
-
