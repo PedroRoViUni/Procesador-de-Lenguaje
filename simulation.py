@@ -50,8 +50,8 @@ def drawgraph(hogar):
         G.nodes[n]['pos'] = p  
 
     nx.draw(G,pos=pos,with_labels=True, edge_color="grey",
-        node_color="tab:grey",node_size=16000, node_shape="s",
-        font_color="white",font_size=15,font_family="Times New Roman", font_weight="bold",
+        node_color="tab:grey",node_size=4000, node_shape="s",
+        font_color="white",font_size=9,font_family="Times New Roman", font_weight="bold",
         width=5)
     
     for node in G.nodes():
@@ -84,7 +84,7 @@ def menuPrincipal(hogar):
 
 def updateNode(node):
     pos = nx.get_node_attributes(G, 'pos')
-    nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="MediumSeaGreen", node_size=16000, node_shape="s")
+    nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="MediumSeaGreen", node_size=4000, node_shape="s")
 
 def menu(node,hogar):
     i = 0
@@ -113,7 +113,7 @@ def menu(node,hogar):
         nodeVec = vecinos[opcion]
         print(nodeVec)
         pos = nx.get_node_attributes(G, 'pos')
-        nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:grey", node_size=16000, node_shape="s")
+        nx.draw_networkx_nodes(G, pos=pos, nodelist=[node], node_color="tab:grey", node_size=4000, node_shape="s")
         updateNode(nodeVec)
         menu(nodeVec,hogar)
 
@@ -147,14 +147,14 @@ def updateSensor(node,hogar):
     plt.clf()
     pos = nx.get_node_attributes(G, 'pos')
     nx.draw(G,pos=pos,with_labels=True, edge_color="grey",
-        node_color="tab:grey",node_size=16000, node_shape="s",
-        font_color="white",font_size=15,font_family="Times New Roman", font_weight="bold",
+        node_color="tab:grey",node_size=4000, node_shape="s",
+        font_color="white",font_size=9,font_family="Times New Roman", font_weight="bold",
         width=5)
 
     for n in G.nodes():
         consLabel(n, pos)
 
-    plt.margins(0.2)
+    plt.margins(0.1)
     updateNode(node)
     menu(node,hogar)
 
@@ -162,8 +162,8 @@ def consLabel(n, pos):
     sensores = []
     actuadores = []
 
-    pos_labels_sens = {node: (pos[node][0], pos[node][1] - 0.1) for node in G.nodes()}
-    pos_labels_acts = {node: (pos[node][0], pos[node][1] + 0.1) for node in G.nodes()}
+    pos_labels_sens = {node: (pos[node][0], pos[node][1] - 0.097) for node in G.nodes()}
+    pos_labels_acts = {node: (pos[node][0], pos[node][1] + 0.097) for node in G.nodes()}
 
     for sen in G.nodes[n]['hab'].arraySensores:
         sensores.append(sen.id + " " + sen.tipo + " = " + sen.valor + "\n")
@@ -178,8 +178,8 @@ def consLabel(n, pos):
     labels_sens[n] = sens
     labels_acts[n] = acts
 
-    nx.draw_networkx_labels(G, pos=pos_labels_sens, labels=labels_sens, font_size=10, font_family="Times New Roman", font_weight="bold")
-    nx.draw_networkx_labels(G, pos=pos_labels_acts, labels=labels_acts, font_size=10, font_family="Times New Roman", font_weight="bold")
+    nx.draw_networkx_labels(G, pos=pos_labels_sens, labels=labels_sens, font_size=8, font_family="Times New Roman", font_weight="bold")
+    nx.draw_networkx_labels(G, pos=pos_labels_acts, labels=labels_acts, font_size=8, font_family="Times New Roman", font_weight="bold")
 
 def inputTipo(tipo):
     if tipo == 'lum':
@@ -239,8 +239,7 @@ def crearSensores(dicSensores):
 
 def ejecutarRegla(regla):
     crearSensores(diccionarios())
-    #print(regla.Condiciones)
-    #print(str(eval(regla.Condiciones)))
+
     if eval(regla.Condiciones):
         for conse in regla.Consecuencias:
             for node in G.nodes():
