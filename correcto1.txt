@@ -1,0 +1,28 @@
+NewHogar correcto5 {
+	( cocina1,  (5, 4) ;
+			sensorluz01 lum = 20, sensorincendios1 fue = False,
+			sensorcalor0 tem =10;
+			persiana01 pers = bajar, calefacocina0 cale = 10,
+			rociadores0 roci = False
+	),
+	( salon0, (5, 6);
+			sensorluz02 lum = 50;
+			persianasal0 pers = bajar,
+			calefa01 cale= 27
+	),
+	( wc0,  (12 , 41);
+			sensor23 lum = 20; 
+			actuador156 pers = bajar
+	),
+	( habi01, (2, 2);
+			luz123 lum =3; 
+			cale88 cale=40
+	);
+	accesos:  
+	(cocina1 - salon0),(salon0 - habi01),( habi01 - wc0)
+	;
+
+	if ( sensorcalor0 < 15){
+		calefacocina0 = 16
+	}
+} 
