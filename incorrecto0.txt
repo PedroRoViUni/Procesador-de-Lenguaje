@@ -35,11 +35,11 @@ NewHogar correcto5 {
 	),
 	( habi01, (2, 2);
 			luz123 lum =3; 
-			cale88 cale=40
+			cale88 cale=45
 	),
 	( habi2, (2,2); 
 			luzhabi2 lum=4; 
-			cale231 cale=47
+			cale231 cale=52
 	),
 	( wcprivad0, (3,3); 
 			luzba1 lum=0; 

@@ -3,7 +3,7 @@ NewHogar correcto5 {
 			sensorluz00 lum = 20, sensorincendios0 fue = False;
 			calefa00 cale = 20, alarma0 alar = False
 	),
-	( pasillo1 , (5, 2);
+	( pasillo0 , (5, 2);
 			sensorluz04 lum = 20, sensorincendios2 fue = False;
 			calefa05 cale = 20 
 	),
@@ -38,7 +38,7 @@ NewHogar correcto5 {
 			cale88 cale=40
 	),
 	( habi2, (2,2); 
-			luzhabi2 lum=4; 
+			luzhabi2 lum=12; 
 			cale231 cale=47
 	),
 	( wcprivad0, (3,3); 
